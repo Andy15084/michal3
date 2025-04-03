@@ -9,6 +9,7 @@ import {
   Tooltip,
   IconButton,
   useTheme,
+  Paper,
 } from "@mui/material";
 import {
   Home as HomeIcon,
@@ -32,46 +33,65 @@ export default function Navbar() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const { toggleTheme, isDarkMode } = useColorMode(); // Get toggle function and theme status
+  const theme = useTheme();
 
   // Paths for authenticated users (private paths)
   const privatePaths = [
-    { label: "Domov", value: "/", icon: <HomeIcon /> },
-    { label: "Hľadať", value: "/hladanie", icon: <SearchIcon /> },
-    { label: "Pridať", value: "/pridat", icon: <AddCircleIcon /> },
-    { label: "Záložky", value: "/zalozky", icon: <BookmarkIcon /> },
+    { label: "Home", value: "/", icon: <HomeIcon /> },
+    { label: "Search", value: "/hladanie", icon: <SearchIcon /> },
+    { label: "Add", value: "/pridat", icon: <AddCircleIcon /> },
+    { label: "Bookmarks", value: "/zalozky", icon: <BookmarkIcon /> },
     {
-      label: "Profil",
+      label: "Profile",
       value: "/profil",
       icon: session?.user?.image ? (
-        <Avatar alt={session?.user?.name || "User"} src={session?.user?.image || undefined} />
+        <Avatar 
+          alt={session?.user?.name || "User"} 
+          src={session?.user?.image || undefined}
+          sx={{ 
+            width: 28, 
+            height: 28,
+            border: `2px solid ${theme.palette.primary.main}`,
+          }} 
+        />
       ) : (
-        <Avatar>{session?.user?.name?.charAt(0) || "U"}</Avatar>
+        <Avatar 
+          sx={{ 
+            width: 28, 
+            height: 28,
+            border: `2px solid ${theme.palette.primary.main}`,
+            bgcolor: theme.palette.primary.main,
+          }}
+        >
+          {session?.user?.name?.charAt(0) || "U"}
+        </Avatar>
       ),
     },
-    { label: "Odhlásiť", value: "/auth/odhlasenie", icon: <LogoutIcon /> },
+    { label: "Sign Out", value: "/auth/odhlasenie", icon: <LogoutIcon /> },
   ];
 
   // Paths for non-authenticated users (public paths)
   const publicPaths = [
-    { label: "Domov", value: "/", icon: <HomeIcon /> },
-    { label: "O nás", value: "/o-nas", icon: <InfoIcon /> },
-    { label: "Registrácia", value: "/auth/registracia", icon: <AppRegistrationIcon /> },
-    { label: "Prihlásenie", value: "/auth/prihlasenie", icon: <LoginIcon /> },
+    { label: "Home", value: "/", icon: <HomeIcon /> },
+    { label: "About", value: "/o-nas", icon: <InfoIcon /> },
+    { label: "Sign Up", value: "/auth/registracia", icon: <AppRegistrationIcon /> },
+    { label: "Sign In", value: "/auth/prihlasenie", icon: <LoginIcon /> },
   ];
 
   // Select paths based on user authentication status
   const navigationPaths = status === "authenticated" ? privatePaths : publicPaths;
 
   return (
-    <Box
+    <Paper
+      elevation={3}
       sx={{
         width: "100%",
         position: "fixed",
         bottom: 0,
-        backgroundColor: isDarkMode ? "#121212" : "#ffffff", // Adjust the background color based on dark mode
-        boxShadow: "0px -1px 4px rgba(0, 0, 0, 0.1)",
-        borderTop: "1px solid #e0e0e0",
+        backgroundColor: isDarkMode ? theme.palette.background.paper : theme.palette.background.paper,
+        borderRadius: "16px 16px 0 0",
         zIndex: 1000,
+        borderTop: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
       }}
     >
       <BottomNavigation
@@ -84,31 +104,37 @@ export default function Navbar() {
           }
         }}
         sx={{
-          backgroundColor: isDarkMode ? "#121212" : "#ffffff",
+          backgroundColor: 'transparent',
           "& .Mui-selected": {
-            color: isDarkMode ? "#90caf9" : "#1976d2",
+            color: theme.palette.primary.main,
+            "& .MuiSvgIcon-root": {
+              transform: "scale(1.2)",
+              transition: "transform 0.2s ease-in-out",
+            },
           },
           "& .MuiBottomNavigationAction-root": {
             minWidth: "50px",
-            "&.Mui-selected .MuiSvgIcon-root": {
-              fontSize: "28px",
+            padding: "6px 0",
+            "& .MuiSvgIcon-root": {
+              fontSize: "24px",
+              transition: "transform 0.2s ease-in-out, color 0.2s ease-in-out",
+            },
+            "&:hover .MuiSvgIcon-root": {
+              transform: "scale(1.1)",
             },
           },
         }}
       >
         {navigationPaths.map((path) => (
-          <Tooltip key={path.value} title={path.label} arrow>
+          <Tooltip key={path.value} title={path.label} arrow placement="top">
             <BottomNavigationAction
               label={path.label}
               value={path.value}
               icon={path.icon}
               sx={{
-                color: isDarkMode ? "#b0b0b0" : "#5f6368",
-                "& .MuiSvgIcon-root": {
-                  fontSize: "24px",
-                },
+                color: isDarkMode ? theme.palette.text.secondary : theme.palette.text.secondary,
                 "&:hover": {
-                  backgroundColor: isDarkMode ? "#424242" : "#f5f5f5",
+                  backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
                 },
               }}
             />
@@ -124,12 +150,16 @@ export default function Navbar() {
           top: "50%",
           right: 16,
           transform: "translateY(-50%)",
-          color: isDarkMode ? "#ffffff" : "#000000",
+          color: theme.palette.primary.main,
+          backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
+          "&:hover": {
+            backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+          },
         }}
       >
         {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
       </IconButton>
-    </Box>
+    </Paper>
   );
 }
 

@@ -3,31 +3,33 @@
 import React, { useState } from "react";
 import {
   Button,
-  Container,
   Typography,
   Box,
   useTheme,
   Checkbox,
   FormControlLabel,
   Link,
+  Paper,
+  Divider,
+  Avatar,
 } from "@mui/material";
 import { signIn } from "next-auth/react";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { useRouter } from "next/navigation";
 
-
 export default function SignUpView() {
   const router = useRouter();
-  const theme = useTheme(); // Access the MUI theme
-  const [agreeToGdpr, setAgreeToGdpr] = useState(false); // State for checkbox
+  const theme = useTheme();
+  const [agreeToGdpr, setAgreeToGdpr] = useState(false);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAgreeToGdpr(event.target.checked); // Update checkbox state
+    setAgreeToGdpr(event.target.checked);
   };
+  
   const handleSignUp = (provider: string) => {
     if (!agreeToGdpr) {
-      alert("Pre pokračovanie musíte súhlasiť s podmienkami používania a GDPR.");
+      alert("You must agree to the terms of use and GDPR to continue.");
       return;
     }
     signIn(provider);
@@ -40,70 +42,45 @@ export default function SignUpView() {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
-        backgroundColor: theme.palette.background.default, // Use theme background color
+        backgroundColor: theme.palette.background.default,
+        padding: "20px",
       }}
     >
-      <Container
-        maxWidth="xs"
+      <Paper
+        elevation={0}
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          p: 3,
-          bgcolor: theme.palette.background.paper, // Use theme background paper color
-          boxShadow: 3,
-          borderRadius: 2,
+          p: 4,
+          maxWidth: "400px",
+          width: "100%",
+          borderRadius: "16px",
+          border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
         }}
       >
         {/* Logo / Title */}
-        <Typography variant="h5" sx={{ mb: 3 }}>
-          Registrácia
-        </Typography>
-
-        {/* Sign-in link */}
-        <Typography variant="body1" sx={{ mb: 4 }}>
-        Už máte účet?{" "}
-        <Link
-          component="button"
-          onClick={() => router.push("/auth/prihlasenie")}
-          sx={{ cursor: "pointer" }}
+        <Avatar
+          sx={{
+            width: 64,
+            height: 64,
+            mb: 2,
+            bgcolor: theme.palette.primary.main,
+          }}
         >
-          Prihláste sa
-        </Link>
-      </Typography>
-
-        {/* GDPR Checkbox with reduced space */}
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={agreeToGdpr}
-              onChange={handleCheckboxChange}
-              color="primary"
-            />
-          }
-          label={
-            <Typography variant="body2">
-              Súhlasím s{" "}
-              <Link
-                component="button"
-                onClick={() => router.push("/gdpr")} // Navigate to GDPR page
-                sx={{ cursor: "pointer" }}
-              >
-                GDPR
-              </Link>{" "}
-              a{" "}
-              <Link
-                component="button"
-                onClick={() => router.push("/podmienky")} // Navigate to Terms page
-                sx={{ cursor: "pointer" }}
-              >
-                podmienkami používania
-              </Link>.
-            </Typography>
-          }
-          sx={{ mb: 1 }} // Reduced margin between checkbox and link
-        />
+          <Typography variant="h4" sx={{ fontWeight: 700 }}>
+            S
+          </Typography>
+        </Avatar>
+        
+        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+          Create Account
+        </Typography>
+        
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 4, textAlign: "center" }}>
+          Join our community and start sharing your moments
+        </Typography>
 
         {/* Google Sign Up */}
         <Button
@@ -112,15 +89,18 @@ export default function SignUpView() {
           startIcon={<GoogleIcon />}
           onClick={() => handleSignUp("google")}
           sx={{
-            mb: 1,
-            borderColor: theme.palette.primary.main, // Use theme's primary color for Google button
-            color: theme.palette.primary.main,
+            mb: 2,
+            py: 1.2,
+            borderRadius: "8px",
+            borderColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)",
+            color: theme.palette.text.primary,
             "&:hover": {
-              borderColor: theme.palette.primary.dark, // Hover effect for Google button
+              borderColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)",
+              backgroundColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.02)" : "rgba(255, 255, 255, 0.05)",
             },
           }}
         >
-          Registrovať sa účtom Google
+          Sign up with Google
         </Button>
 
         {/* GitHub Sign Up */}
@@ -130,17 +110,93 @@ export default function SignUpView() {
           startIcon={<GitHubIcon />}
           onClick={() => handleSignUp("github")}
           sx={{
-            mb: 1,
-            borderColor: theme.palette.mode === "light" ? "#333" : "#fff", // GitHub color for border based on mode
-            color: theme.palette.mode === "light" ? "#333" : "#fff", // Text color (GitHub brand color)
+            mb: 3,
+            py: 1.2,
+            borderRadius: "8px",
+            borderColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)",
+            color: theme.palette.text.primary,
             "&:hover": {
-              borderColor: theme.palette.mode === "light" ? "#444" : "#bbb", // Hover effect color
+              borderColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)",
+              backgroundColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.02)" : "rgba(255, 255, 255, 0.05)",
             },
           }}
         >
-          Registrovať sa účtom GitHub
+          Sign up with GitHub
         </Button>
-      </Container>
+
+        <Divider sx={{ width: "100%", mb: 3 }}>
+          <Typography variant="body2" color="text.secondary">
+            OR
+          </Typography>
+        </Divider>
+
+        {/* GDPR Checkbox */}
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={agreeToGdpr}
+              onChange={handleCheckboxChange}
+              color="primary"
+              sx={{
+                '&.Mui-checked': {
+                  color: theme.palette.primary.main,
+                },
+              }}
+            />
+          }
+          label={
+            <Typography variant="body2" color="text.secondary">
+              I agree to the{" "}
+              <Link
+                component="button"
+                onClick={() => router.push("/gdpr")}
+                sx={{ 
+                  cursor: "pointer",
+                  color: theme.palette.primary.main,
+                  "&:hover": {
+                    textDecoration: "underline",
+                  },
+                }}
+              >
+                GDPR
+              </Link>{" "}
+              and{" "}
+              <Link
+                component="button"
+                onClick={() => router.push("/podmienky")}
+                sx={{ 
+                  cursor: "pointer",
+                  color: theme.palette.primary.main,
+                  "&:hover": {
+                    textDecoration: "underline",
+                  },
+                }}
+              >
+                Terms of Use
+              </Link>
+            </Typography>
+          }
+          sx={{ mb: 3, width: "100%" }}
+        />
+
+        <Typography variant="body2" sx={{ textAlign: "center" }}>
+          Already have an account?{" "}
+          <Link
+            component="button"
+            onClick={() => router.push("/auth/prihlasenie")}
+            sx={{ 
+              cursor: "pointer",
+              color: theme.palette.primary.main,
+              fontWeight: 600,
+              "&:hover": {
+                textDecoration: "underline",
+              },
+            }}
+          >
+            Sign in
+          </Link>
+        </Typography>
+      </Paper>
     </Box>
   );
 }

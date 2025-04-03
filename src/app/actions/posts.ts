@@ -25,6 +25,11 @@ export const fetchPosts = async (): Promise<(Post & { user: User })[]> => { // A
           include: {
             user: true
           }
+        },
+        images: {
+          orderBy: {
+            order: 'asc'
+          }
         }
       },
     });
@@ -37,7 +42,7 @@ export const fetchPosts = async (): Promise<(Post & { user: User })[]> => { // A
 };
 
 // Fetch posts by a specific user ID, including the user details
-export const fetchPostsByUserId = async (userId: string): Promise<(Post & { user: User })[]> => { // Add types for user inclusion
+export const fetchPostsByUserId = async (userId: string): Promise<(Post & { user: User })[]> => {
   try {
     const posts = await prisma.post.findMany({
       where: { userId },
@@ -57,6 +62,11 @@ export const fetchPostsByUserId = async (userId: string): Promise<(Post & { user
         bookmarks: {
           include: {
             user: true
+          }
+        },
+        images: {
+          orderBy: {
+            order: 'asc'
           }
         }
       },

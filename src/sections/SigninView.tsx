@@ -6,56 +6,66 @@ import {
   Typography,
   Box,
   useTheme,
-  Link, // Import useTheme hook
+  Link,
+  Paper,
+  Divider,
+  Avatar,
 } from "@mui/material";
 import { signIn } from "next-auth/react";
 import GoogleIcon from "@mui/icons-material/Google";
-import GitHubIcon from "@mui/icons-material/GitHub"; // Import GitHub icon
+import GitHubIcon from "@mui/icons-material/GitHub";
 import { useRouter } from "next/navigation";
-
 
 export default function SignInView() {
   const router = useRouter();
-  const theme = useTheme(); // Access the MUI theme
+  const theme = useTheme();
 
   return (
     <Box
       sx={{
         display: "flex",
-        justifyContent: "center",  // Horizontally center the container
-        alignItems: "center",      // Vertically center the container
-        minHeight: "100vh",        // Ensure full viewport height for centering
-        backgroundColor: theme.palette.background.default, // Optional: use theme background
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundColor: theme.palette.background.default,
+        padding: "20px",
       }}
     >
-      <Container
-        maxWidth="xs"
+      <Paper
+        elevation={0}
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center", // Centering the content vertically
-          p: 3,
-          bgcolor: theme.palette.background.paper, // Use theme's paper color
-          boxShadow: 3,
-          borderRadius: 2,
+          justifyContent: "center",
+          p: 4,
+          maxWidth: "400px",
+          width: "100%",
+          borderRadius: "16px",
+          border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
         }}
       >
         {/* Logo / Title */}
-        <Typography variant="h5" sx={{ mb: 3 }}>
-          Prihlásenie
-        </Typography>
-
-        <Typography variant="body1" sx={{ mb: 4 }}>
-        Nemáte ešte účet?{" "}
-        <Link
-          component="button"
-          onClick={() => router.push("/auth/registracia")}
-          sx={{ cursor: "pointer" }}
+        <Avatar
+          sx={{
+            width: 64,
+            height: 64,
+            mb: 2,
+            bgcolor: theme.palette.primary.main,
+          }}
         >
-          Registrujte sa!
-        </Link>
-      </Typography>
+          <Typography variant="h4" sx={{ fontWeight: 700 }}>
+            S
+          </Typography>
+        </Avatar>
+        
+        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+          Welcome Back
+        </Typography>
+        
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 4, textAlign: "center" }}>
+          Sign in to continue to your account
+        </Typography>
 
         {/* Google Sign In */}
         <Button
@@ -64,15 +74,18 @@ export default function SignInView() {
           startIcon={<GoogleIcon />}
           onClick={() => signIn("google")}
           sx={{
-            mb: 1,
-            borderColor: theme.palette.primary.main, // Use theme's primary color for Google button
-            color: theme.palette.primary.main,
+            mb: 2,
+            py: 1.2,
+            borderRadius: "8px",
+            borderColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)",
+            color: theme.palette.text.primary,
             "&:hover": {
-              borderColor: theme.palette.primary.dark, // Hover effect for Google button
+              borderColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)",
+              backgroundColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.02)" : "rgba(255, 255, 255, 0.05)",
             },
           }}
         >
-          Prihlásiť sa účtom Google
+          Continue with Google
         </Button>
 
         {/* GitHub Sign In */}
@@ -82,17 +95,44 @@ export default function SignInView() {
           startIcon={<GitHubIcon />}
           onClick={() => signIn("github")}
           sx={{
-            mb: 1,
-            borderColor: theme.palette.mode === "light" ? "#333" : "#fff", // GitHub color for border based on mode
-            color: theme.palette.mode === "light" ? "#333" : "#fff", // Text color (GitHub brand color)
+            mb: 3,
+            py: 1.2,
+            borderRadius: "8px",
+            borderColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)",
+            color: theme.palette.text.primary,
             "&:hover": {
-              borderColor: theme.palette.mode === "light" ? "#444" : "#bbb", // Hover effect color
+              borderColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.2)",
+              backgroundColor: theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.02)" : "rgba(255, 255, 255, 0.05)",
             },
           }}
         >
-          Prihlásiť sa účtom GitHub
+          Continue with GitHub
         </Button>
-      </Container>
+
+        <Divider sx={{ width: "100%", mb: 3 }}>
+          <Typography variant="body2" color="text.secondary">
+            OR
+          </Typography>
+        </Divider>
+
+        <Typography variant="body2" sx={{ textAlign: "center" }}>
+          Don't have an account?{" "}
+          <Link
+            component="button"
+            onClick={() => router.push("/auth/registracia")}
+            sx={{ 
+              cursor: "pointer",
+              color: theme.palette.primary.main,
+              fontWeight: 600,
+              "&:hover": {
+                textDecoration: "underline",
+              },
+            }}
+          >
+            Sign up
+          </Link>
+        </Typography>
+      </Paper>
     </Box>
   );
 }

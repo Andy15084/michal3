@@ -1,107 +1,138 @@
-//import { createTheme } from '@mui/material/styles';
-//
-//// Define the light theme palette
-//const lightPalette = {
-//  primary: {
-//    main: '#1976d2', // blue
-//  },
-//  secondary: {
-//    main: '#dc004e', // pink
-//  },
-//  background: {
-//    default: '#fafafa', // light background
-//    paper: '#ffffff', // paper background
-//  },
-//  text: {
-//    primary: '#000000', // black text
-//    secondary: '#555555', // gray text
-//  },
-//};
-//
-//// Define the dark theme palette (slightly lighter dark colors)
-//const darkPalette = {
-//  primary: {
-//    main: '#90caf9', // light blue
-//  },
-//  secondary: {
-//    main: '#f50057', // pink
-//  },
-//  background: {
-//    default: '#1a1a1a', // slightly lighter than #121212
-//    paper: '#2c2c2c', // lighter paper background
-//  },
-//  text: {
-//    primary: '#e0e0e0', // light white text (instead of pure white)
-//    secondary: '#a0a0a0', // lighter gray text
-//  },
-//};
-//
-//// Create the theme
-//export const lightTheme = createTheme({
-//  palette: {
-//    mode: 'light', // Set the mode to 'light'
-//    ...lightPalette, // Add light palette colors
-//  },
-//});
-//
-//export const darkTheme = createTheme({
-//  palette: {
-//    mode: 'dark', // Set the mode to 'dark'
-//    ...darkPalette, // Add dark palette colors
-//  },
-//});
-
-
-
 import { createTheme } from '@mui/material/styles';
 
 // Define the light theme palette
 const lightPalette = {
   primary: {
-    main: '#1976d2', // blue
+    main: '#FF3366', // Modern pink/red
+    light: '#FF6B8B',
+    dark: '#CC2952',
+    contrastText: '#FFFFFF',
   },
   secondary: {
-    main: '#dc004e', // pink
+    main: '#4ECDC4', // Teal
+    light: '#7EDCD6',
+    dark: '#3DA69E',
+    contrastText: '#FFFFFF',
   },
   background: {
-    default: '#fafafa', // light background
-    paper: '#ffffff', // paper background
+    default: '#F8F9FA', // Light gray background
+    paper: '#FFFFFF', // White paper background
   },
   text: {
-    primary: '#000000', // black text
-    secondary: '#555555', // gray text
+    primary: '#212529', // Dark gray text
+    secondary: '#6C757D', // Medium gray text
+  },
+  error: {
+    main: '#FF3366', // Same as primary for consistency
+  },
+  success: {
+    main: '#4ECDC4', // Same as secondary for consistency
   },
 };
 
-// Define the dark theme palette (slightly lighter dark colors)
+// Define the dark theme palette
 const darkPalette = {
   primary: {
-    main: '#90caf9', // light blue
+    main: '#FF3366', // Keep the same pink/red
+    light: '#FF6B8B',
+    dark: '#CC2952',
+    contrastText: '#FFFFFF',
   },
   secondary: {
-    main: '#f50057', // pink
+    main: '#4ECDC4', // Keep the same teal
+    light: '#7EDCD6',
+    dark: '#3DA69E',
+    contrastText: '#FFFFFF',
   },
   background: {
-    default: '#1a1a1a', // slightly lighter than #121212
-    paper: '#2c2c2c', // lighter paper background
+    default: '#121212', // Dark background
+    paper: '#1E1E1E', // Slightly lighter paper background
   },
   text: {
-    primary: '#e0e0e0', // light white text (instead of pure white)
-    secondary: '#a0a0a0', // lighter gray text
+    primary: '#F8F9FA', // Light text
+    secondary: '#ADB5BD', // Medium light text
+  },
+  error: {
+    main: '#FF3366', // Same as primary for consistency
+  },
+  success: {
+    main: '#4ECDC4', // Same as secondary for consistency
   },
 };
 
-// Create the theme
+// Common theme settings
+const commonSettings = {
+  typography: {
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    h1: {
+      fontWeight: 700,
+      fontSize: '2rem',
+    },
+    h2: {
+      fontWeight: 600,
+      fontSize: '1.5rem',
+    },
+    h3: {
+      fontWeight: 600,
+      fontSize: '1.25rem',
+    },
+    body1: {
+      fontSize: '1rem',
+      lineHeight: 1.5,
+    },
+    body2: {
+      fontSize: '0.875rem',
+      lineHeight: 1.5,
+    },
+    button: {
+      textTransform: 'none',
+      fontWeight: 500,
+    },
+  },
+  shape: {
+    borderRadius: 12,
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          padding: '8px 16px',
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
+        },
+      },
+    },
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          width: 40,
+          height: 40,
+        },
+      },
+    },
+  },
+};
+
+// Create the themes
 export const lightTheme = createTheme({
   palette: {
-    mode: 'light', // Set the mode to 'light'
-    ...lightPalette, // Add light palette colors
+    mode: 'light',
+    ...lightPalette,
   },
+  ...commonSettings,
 });
 
 export const darkTheme = createTheme({
   palette: {
-    mode: 'dark', // Set the mode to 'dark'
-    ...darkPalette, // Add dark palette colors
+    mode: 'dark',
+    ...darkPalette,
   },
+  ...commonSettings,
 });
